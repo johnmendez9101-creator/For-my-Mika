@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Will You Be My Valentine? 💙</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Readable cursive font -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #b5e6ff, #d6f2ff);
+    font-family: 'Quicksand', sans-serif;
+    text-align: center;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 3rem;
+    color: #1e6fa3;
+    margin-top: 20px;
+  }
+
+  h2 {
+    color: #1e6fa3;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+  }
+
+  .cats img {
+    width: 180px;
+    border-radius: 20px;
+    margin: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+
+  .card {
+    background: rgba(255,255,255,0.9);
+    border-radius: 25px;
+    padding: 20px;
+    margin: 25px 0;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+
+  button {
+    background: #4da3ff;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin: 10px;
+  }
+
+  button:hover {
+    background: #2b8de5;
+  }
+
+  .reward {
+    font-size: 1.4rem;
+    color: #1e6fa3;
+    margin-top: 10px;
+  }
+
+  #score {
+    font-size: 1.3rem;
+    margin-top: 15px;
+    color: #1e6fa3;
+  }
+
+  .heart {
+    position: fixed;
+    bottom: -20px;
+    font-size: 2rem;
+    animation: floatUp 5s linear forwards;
+  }
+
+  @keyframes floatUp {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-110vh); opacity: 0; }
+  }
+</style>
+</head>
+
+<body>
+
+<h1>Will You Be My Valentine? 💙</h1>
+
+<div class="container">
+
+  <!-- Cute Cats -->
+  <div class="cats">
+    <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif">
+    <img src="https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif">
+    <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif">
+  </div>
+
+  <!-- Rewards -->
+  <div id="score">💙 Hearts Collected: 0</div>
+
+  <!-- Game 1 -->
+  <div class="card">
+    <h2>Mini-Game 1: Catch the Heart 💙</h2>
+    <p>Click the button to catch a heart!</p>
+    <button onclick="catchHeart()">Catch 💙</button>
+    <div class="reward" id="reward1"></div>
+  </div>
+
+  <!-- Game 2 -->
+  <div class="card">
+    <h2>Mini-Game 2: Say Yes 😳</h2>
+    <p>Choose wisely…</p>
+    <button onclick="sayYes()">YES 💙</button>
+    <button onclick="sayNo()">NO 🙈</button>
+    <div class="reward" id="reward2"></div>
+  </div>
+
+  <!-- Final -->
+  <div class="card">
+    <h2>Final Question 💌</h2>
+    <button onclick="finalYes()">Will you be my Valentine?</button>
+    <div class="reward" id="finalReward"></div>
+  </div>
+
+</div>
+
+<!-- MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="clickSound">
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_2c58c5b6e4.mp3">
+</audio>
+
+<script>
+  let hearts = 0;
+  const bgMusic = document.getElementById("bgMusic");
+  const clickSound = document.getElementById("clickSound");
+
+  function unlockMusic() {
+    bgMusic.volume = 0.6;
+    bgMusic.play().catch(()=>{});
+  }
+
+  document.addEventListener("click", unlockMusic, { once: true });
+
+  function updateScore() {
+    document.getElementById("score").innerText = "💙 Hearts Collected: " + hearts;
+  }
+
+  function spawnHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "💙";
+    heart.style.left = Math.random() * 90 + "vw";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+  }
+
+  function catchHeart() {
+    clickSound.currentTime = 0;
+    clickSound.play();
+    hearts++;
+    updateScore();
+    spawnHeart();
+    document.getElementById("reward1").innerText = "You caught my heart 💙";
+  }
+
+  function sayYes() {
+    clickSound.currentTime = 0;
+    clickSound.play();
+    hearts += 2;
+    updateScore();
+    spawnHeart();
+    document.getElementById("reward2").innerText = "Best choice ever 😍";
+  }
+
+  function sayNo() {
+    clickSound.currentTime = 0;
+    clickSound.play();
+    document.getElementById("reward2").innerText = "Wrong answer 😼 try again";
+  }
+
+  function finalYes() {
+    clickSound.currentTime = 0;
+    clickSound.play();
+    hearts += 5;
+    updateScore();
+    for (let i = 0; i < 10; i++) spawnHeart();
+    document.getElementById("finalReward").innerText =
+      "YAY 💙 You are officially my Valentine 💌😽";
+  }
+</script>
+
+</body>
+</html>
